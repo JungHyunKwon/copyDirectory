@@ -14,15 +14,6 @@ const fs = require('fs-extra'),
 	  });
 
 /**
- * @name 공백제거
- * @return {string}
- * @since 2018-07-13
- */
-String.prototype.removeBlank = function() {
-	return this.replace(/\s/g, '');
-};
-
-/**
  * @name 유효한 파일명으로 거르기
  * @return {string}
  * @since 2018-07-13
@@ -81,7 +72,7 @@ rl.question('경로 : ', (path) => {
 				rl.question('저장이름 : ', (saveName) => {
 					//값이 있을때
 					if(saveName) {
-						copyPath(path, savePath, saveName.removeBlank().split(','));
+						copyPath(path, savePath, saveName.split(','));
 					}else{
 						console.error('저장이름을 입력해주세요.');
 					}
