@@ -1,0 +1,14 @@
+{
+  "name": "copypath",
+  "version": "1.0.0",
+  "description": "",
+  "main": "copyPath.js",
+  "scripts": {
+    "test": "node copyPath.js"
+  },
+  "author": "JungHyunKwon",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^7.0.0"
+  }
+}
