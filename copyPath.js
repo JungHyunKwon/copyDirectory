@@ -19,7 +19,7 @@ const fs = require('fs-extra'),
  * @since 2018-07-13
  */
 String.prototype.filterFileName = function() {
-	return this.replace(/[\/"*?"<>|]/g, '');
+	return this.replace(/[\/:"*?"<>|]/g, '');
 };
 
 /**
