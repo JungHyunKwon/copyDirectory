@@ -4,7 +4,7 @@
   "description": "",
   "main": "copyPath.js",
   "scripts": {
-    "test": "node copyPath.js"
+    "test": "node copyPath"
   },
   "author": "JungHyunKwon",
   "license": "ISC",

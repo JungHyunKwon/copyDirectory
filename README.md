@@ -11,6 +11,6 @@ saveName | array \|\| string | 저장이름
 
 ## CLI
 ````javascript
-node copyPath.js
+node copyPath
 ````
 저장이름은 콤마(,)로 구분할 수 있습니다.
