@@ -1,10 +1,10 @@
 {
-  "name": "copypath",
+  "name": "copydirectory",
   "version": "1.0.0",
   "description": "",
-  "main": "copyPath.js",
+  "main": "copyDirectory.js",
   "scripts": {
-    "test": "node copyPath"
+    "test": "node copyDirectory"
   },
   "author": "JungHyunKwon",
   "license": "ISC",

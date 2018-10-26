@@ -1,5 +1,5 @@
 /**
- * @name copyPath
+ * @name copyDirectory
  * @author JungHyunKwon
  * @since 2019-09-05
  */
@@ -23,23 +23,22 @@ String.prototype.filterFileName = function() {
 };
 
 /**
- * @name 경로 복사
  * @param {string} directory
  * @param {string} saveDirectory
  * @param {string || array} saveName
  * @since 2018-09-05
  */
-function copyPath(directory, saveDirectory, saveName) {
-	//문자이면서 값이 있을때
+function copyDirectory(directory, saveDirectory, saveName) {
+	//문자이면서 값이 있을 때
 	if(typeof saveName === 'string' && saveName) {
 		saveName = [saveName];
 	}
 
-	//문자일때
+	//문자일 때
 	if(typeof directory === 'string') {
-		//문자일때
+		//문자일 때
 		if(typeof saveDirectory === 'string') {
-			//배열일때
+			//배열일 때
 			if(Array.isArray(saveName)) {
 				saveName.forEach((value, index, array) => {
 					value = saveDirectory + value.filterFileName();
@@ -64,15 +63,15 @@ function copyPath(directory, saveDirectory, saveName) {
 
 //질문
 rl.question('경로 : ', (directory) => {
-	//값이 있을때
+	//값이 있을 때
 	if(directory) {
 		rl.question('저장 경로 : ', (saveDirectory) => {
-			//값이 있을때
+			//값이 있을 때
 			if(saveDirectory) {
 				rl.question('저장할 이름 : ', (saveName) => {
-					//값이 있을때
+					//값이 있을 때
 					if(saveName) {
-						copyPath(directory, saveDirectory, saveName.split(','));
+						copyDirectory(directory, saveDirectory, saveName.split(','));
 					}else{
 						console.error('저장할 이름을 입력해주세요.');
 					}
