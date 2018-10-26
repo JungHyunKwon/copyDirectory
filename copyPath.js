@@ -24,28 +24,28 @@ String.prototype.filterFileName = function() {
 
 /**
  * @name 경로 복사
- * @param {string} path
- * @param {string} savePath
+ * @param {string} directory
+ * @param {string} saveDirectory
  * @param {string || array} saveName
  * @since 2018-09-05
  */
-function copyPath(path, savePath, saveName) {
+function copyPath(directory, saveDirectory, saveName) {
 	//문자이면서 값이 있을때
 	if(typeof saveName === 'string' && saveName) {
 		saveName = [saveName];
 	}
 
 	//문자일때
-	if(typeof path === 'string') {
+	if(typeof directory === 'string') {
 		//문자일때
-		if(typeof savePath === 'string') {
+		if(typeof saveDirectory === 'string') {
 			//배열일때
 			if(Array.isArray(saveName)) {
 				saveName.forEach((value, index, array) => {
-					value = savePath + value.filterFileName();
+					value = saveDirectory + value.filterFileName();
 
 					try {
-						fs.copySync(path, value);
+						fs.copySync(directory, value);
 						console.log(value + '에 저장하였습니다.');
 					}catch(error) {
 						console.error(error);
@@ -55,32 +55,32 @@ function copyPath(path, savePath, saveName) {
 				console.error('saveName : 배열이 아닙니다.');
 			}
 		}else{
-			console.error('savePath : 문자가 아닙니다.');
+			console.error('saveDirectory : 문자가 아닙니다.');
 		}
 	}else{
-		console.error('path : 문자가 아닙니다.');
+		console.error('directory : 문자가 아닙니다.');
 	}
 }
 
 //질문
-rl.question('경로 : ', (path) => {
+rl.question('경로 : ', (directory) => {
 	//값이 있을때
-	if(path) {
-		rl.question('저장경로 : ', (savePath) => {
+	if(directory) {
+		rl.question('저장 경로 : ', (saveDirectory) => {
 			//값이 있을때
-			if(savePath) {
-				rl.question('저장이름 : ', (saveName) => {
+			if(saveDirectory) {
+				rl.question('저장할 이름 : ', (saveName) => {
 					//값이 있을때
 					if(saveName) {
-						copyPath(path, savePath, saveName.split(','));
+						copyPath(directory, saveDirectory, saveName.split(','));
 					}else{
-						console.error('저장이름을 입력해주세요.');
+						console.error('저장할 이름을 입력해주세요.');
 					}
 
 					rl.close();
 				});
 			}else{
-				console.error('저장경로를 입력해주세요.');
+				console.error('저장 경로를 입력해주세요.');
 				rl.close();	
 			}
 		});
