@@ -46,8 +46,8 @@ function copyDirectory(directory, saveDirectory, saveName) {
 					try {
 						fs.copySync(directory, value);
 						console.log(value + '에 저장하였습니다.');
-					}catch(error) {
-						console.error(error);
+					}catch(e) {
+						console.error(e);
 					}
 				});
 			}else{
