@@ -29,15 +29,15 @@ function filterFileName(value) {
  * @since 2018-09-05
  */
 function copyDirectory(directory, saveDirectory, saveName) {
-	//문자이면서 값이 있을 때
-	if(typeof saveName === 'string' && saveName) {
-		saveName = [saveName];
-	}
-
 	//문자일 때
 	if(typeof directory === 'string') {
 		//문자일 때
 		if(typeof saveDirectory === 'string') {
+			//문자이면서 값이 있을 때
+			if(typeof saveName === 'string' && saveName) {
+				saveName = [saveName];
+			}
+
 			//배열일 때
 			if(Array.isArray(saveName)) {
 				saveName.forEach((value, index, array) => {
