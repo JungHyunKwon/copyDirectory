@@ -18,9 +18,9 @@ const fs = require('fs-extra'),
  * @return {string}
  * @since 2018-07-13
  */
-String.prototype.filterFileName = function() {
-	return this.replace(/[\/:"*?"<>|]/g, '');
-};
+function filterFileName(value) {
+	return (typeof value === 'string') ? value.replace(/[\/:"*?"<>|]/g, '') : '';
+}
 
 /**
  * @param {string} directory
@@ -41,7 +41,7 @@ function copyDirectory(directory, saveDirectory, saveName) {
 			//배열일 때
 			if(Array.isArray(saveName)) {
 				saveName.forEach((value, index, array) => {
-					value = saveDirectory + value.filterFileName();
+					value = saveDirectory + filterFileName(value);
 
 					try {
 						fs.copySync(directory, value);
