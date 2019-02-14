@@ -26,7 +26,7 @@ function filterFilename(value) {
  * @param {obejct} options {
        copyPath : string,
 	   storagePath : string,
-	   names : string || array
+	   names : array
    }
  * @since 2018-09-05
  */
@@ -40,11 +40,6 @@ function copyDirectory(options) {
 		//문자일 때
 		if(typeof storagePath === 'string') {
 			let names = options.names;
-
-			//문자이면서 값이 있을 때
-			if(typeof names === 'string' && names) {
-				names = [names];
-			}
 
 			//배열일 때
 			if(Array.isArray(names)) {
@@ -71,7 +66,7 @@ function copyDirectory(options) {
 					}
 				})(0);
 			}else{
-				console.error('names : 문자 또는 배열이 아닙니다.');
+				console.error('names : 배열이 아닙니다.');
 			}
 		}else{
 			console.error('storagePath : 문자가 아닙니다.');
