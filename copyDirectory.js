@@ -7,6 +7,7 @@
 'use strict';
 
 const fs = require('fs-extra'),
+	  filenamify = require('filenamify'),
 	  readline = require('readline'),
 	  rl = readline.createInterface({
 	      input : process.stdin,
@@ -14,31 +15,23 @@ const fs = require('fs-extra'),
 	  });
 
 /**
- * @names 유효한 파일명으로 거르기
- * @return {string}
- * @since 2018-07-13
- */
-function filterFilename(value) {
-	return (typeof value === 'string') ? value.replace(/[\/:"*?"<>|]/g, '') : '';
-}
-
-/**
  * @param {obejct} options {
-       copyPath : string,
-	   storagePath : string,
+       directory : string,
+	   saveDirectory : string,
 	   names : array
    }
+   @param {function} callback
  * @since 2018-09-05
  */
-function copyDirectory(options) {
-	let copyPath = options.copyPath;
+function copyDirectory(options, callback) {
+	let directory = options.directory;
 
 	//문자일 때
-	if(typeof copyPath === 'string') {
-		let storagePath = options.storagePath;
+	if(typeof directory === 'string') {
+		let saveDirectory = options.saveDirectory;
 
 		//문자일 때
-		if(typeof storagePath === 'string') {
+		if(typeof saveDirectory === 'string') {
 			let names = options.names;
 
 			//배열일 때
@@ -48,50 +41,55 @@ function copyDirectory(options) {
 				(function loopNames(index) {
 					//이름 개수만큼 반복
 					if(namesLength > index) {
-						let name = names[index],
-							filteredFilename = filterFilename(name);
+						let savePath = saveDirectory + '/' + filenamify(names[index], {
+							replacement : ''
+						});
 
-						fs.copy(copyPath, storagePath + '/' + filteredFilename, (err) => {
+						fs.copy(directory, savePath, (err) => {
 							//오류가 있을 때
 							if(err) {
-								console.error(filteredFilename + ' - 복사 실패');
+								console.error(savePath + '에 복사 실패하였습니다.');
 							}else{
-								console.log(filteredFilename + ' - 복사 성공');
+								console.log(savePath + '에 복사하였습니다.');
 							}
 							
 							loopNames(index + 1);
 						});
-					}else{
-						console.log('작업을 완료하였습니다.');
+					
+					//함수일 때
+					}else if(typeof callback === 'function') {
+						callback();
 					}
 				})(0);
 			}else{
 				console.error('names : 배열이 아닙니다.');
 			}
 		}else{
-			console.error('storagePath : 문자가 아닙니다.');
+			console.error('saveDirectory : 문자가 아닙니다.');
 		}
 	}else{
-		console.error('copyPath : 문자가 아닙니다.');
+		console.error('directory : 문자가 아닙니다.');
 	}
 }
 
 //질문
-rl.question('복사 경로 : ', (copyPath) => {
+rl.question('경로 : ', (directory) => {
 	//값이 있을 때
-	if(copyPath) {
-		rl.question('저장 경로 : ', (storagePath) => {
+	if(directory) {
+		rl.question('저장 경로 : ', (saveDirectory) => {
 			//값이 있을 때
-			if(storagePath) {
-				console.log('\n쉼표로 구분할 수 있습니다.');
+			if(saveDirectory) {
+				console.log('\n쉼표로 구분할 수 있습니다.\n');
 
 				rl.question('이름 : ', (names) => {
 					//값이 있을 때
 					if(names) {
 						copyDirectory({
-							copyPath : copyPath,
-							storagePath : storagePath,
+							directory : directory,
+							saveDirectory : saveDirectory,
 							names : names.split(',')
+						}, () => {
+							console.log('작업을 완료하였습니다.');
 						});
 					}else{
 						console.error('이름을 입력해주세요');
@@ -105,7 +103,7 @@ rl.question('복사 경로 : ', (copyPath) => {
 			}
 		});
 	}else{
-		console.error('복사 경로를 입력해주세요');
+		console.error('경로를 입력해주세요');
 		rl.close();
 	}
 });
