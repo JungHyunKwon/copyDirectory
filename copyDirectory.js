@@ -6,8 +6,8 @@
 
 'use strict';
 
-const fs = require('fs-extra'),
-	  filenamify = require('filenamify'),
+const fs = require('fs-extra'), // {@link https://github.com/jprichardson/node-fs-extra}
+	  filenamify = require('filenamify'), // {@link https://github.com/sindresorhus/filenamify}
 	  readline = require('readline'),
 	  rl = readline.createInterface({
 	      input : process.stdin,
