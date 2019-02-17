@@ -36,31 +36,35 @@ function copyDirectory(options, callback) {
 
 			//배열일 때
 			if(Array.isArray(names)) {
-				let namesLength = names.length;
+				//함수일 때
+				if(typeof callback === 'function') {
+					let namesLength = names.length;
 
-				(function loopNames(index) {
-					//이름 개수만큼 반복
-					if(namesLength > index) {
-						let savePath = saveDirectory + '/' + filenamify(names[index], {
-							replacement : ''
-						});
+					(function loopNames(index) {
+						let options = {};
 
-						fs.copy(directory, savePath, (err) => {
-							//오류가 있을 때
-							if(err) {
-								console.error(savePath + '에 복사 실패하였습니다.');
-							}else{
-								console.log(savePath + '에 복사하였습니다.');
-							}
-							
-							loopNames(index + 1);
-						});
-					
-					//함수일 때
-					}else if(typeof callback === 'function') {
-						callback();
-					}
-				})(0);
+						//이름 개수만큼 반복
+						if(namesLength > index) {
+							options.saveDirectory = saveDirectory + '/' + filenamify(names[index], {
+								replacement : ''
+							});
+
+							fs.copy(directory, options.saveDirectory, (err) => {
+								options.isSaved = (err) ? false : true;
+
+								callback(options);
+
+								loopNames(index + 1);
+							});
+						}else{
+							options.isLast = true;
+
+							callback(options);
+						}
+					})(0);
+				}else{
+					console.error('callback : 함수가 아닙니다.');
+				}
 			}else{
 				console.error('names : 배열이 아닙니다.');
 			}
@@ -88,8 +92,23 @@ rl.question('경로 : ', (directory) => {
 							directory : directory,
 							saveDirectory : saveDirectory,
 							names : names.split(',')
-						}, () => {
-							console.log('작업을 완료하였습니다.');
+						}, (result) => {
+							let isSaved = result.isSaved,
+								saveDir = result.saveDirectory;
+							
+							//저장했을 때
+							if(isSaved === true) {
+								console.log(saveDir + '에 복사하였습니다.');
+							
+							//저장하지 못했을 때
+							}else if(isSaved === false) {
+								console.error(saveDir + '에 복사 실패하였습니다.');
+							}
+
+							//마지막일 때
+							if(result.isLast) {
+								console.log('작업을 완료하였습니다.');
+							}
 						});
 					}else{
 						console.error('이름을 입력해주세요');
