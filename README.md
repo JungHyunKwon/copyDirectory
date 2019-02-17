@@ -5,12 +5,12 @@ NodeJS로 만들었으며 디렉토리를 복사하여 지정한 경로에 지�
 
 이름 | 형태 | 설명
 | :-- | :-- | :-- |
-path | string | 경로
-savePath | string | 저장 경로
-saveName | array \|\| string | 저장할 이름
+directory | string | 경로
+saveDirectory | string | 저장 경로
+names | string | 이름
 
 ## CLI
 ````javascript
 node copyDirectory
 ````
-저장할 이름은 콤마(,)로 구분할 수 있습니다.
+이름은 콤마(,)로 구분할 수 있습니다.
