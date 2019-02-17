@@ -20,7 +20,11 @@ const fs = require('fs-extra'),
 	   saveDirectory : string,
 	   names : array
    }
-   @param {function} callback
+   @param {function} callback {
+       isLast : boolean,
+	   isSaved : boolean,
+	   saveDirectory : string
+   }
  * @since 2018-09-05
  */
 function copyDirectory(options, callback) {
@@ -41,25 +45,32 @@ function copyDirectory(options, callback) {
 					let namesLength = names.length;
 
 					(function loopNames(index) {
-						let options = {};
+						let callbackOptions = {
+							isSaved : false,
+							isLast : false,
+							saveDirectory : ''
+						};
 
 						//이름 개수만큼 반복
 						if(namesLength > index) {
-							options.saveDirectory = saveDirectory + '/' + filenamify(names[index], {
+							callbackOptions.saveDirectory = saveDirectory + '/' + filenamify(names[index], {
 								replacement : ''
 							});
 
-							fs.copy(directory, options.saveDirectory, (err) => {
-								options.isSaved = (err) ? false : true;
+							fs.copy(directory, callbackOptions.saveDirectory, (err) => {
+								//오류가 없을 때
+								if(!err) {
+									callbackOptions.isSaved = true;
+								}
 
-								callback(options);
+								callback(callbackOptions);
 
 								loopNames(index + 1);
 							});
 						}else{
-							options.isLast = true;
+							callbackOptions.isLast = true;
 
-							callback(options);
+							callback(callbackOptions);
 						}
 					})(0);
 				}else{
@@ -93,21 +104,17 @@ rl.question('경로 : ', (directory) => {
 							saveDirectory : saveDirectory,
 							names : names.split(',')
 						}, (result) => {
-							let isSaved = result.isSaved,
-								saveDir = result.saveDirectory;
+							let saveDir = result.saveDirectory;
 							
-							//저장했을 때
-							if(isSaved === true) {
-								console.log(saveDir + '에 복사하였습니다.');
-							
-							//저장하지 못했을 때
-							}else if(isSaved === false) {
-								console.error(saveDir + '에 복사 실패하였습니다.');
-							}
-
 							//마지막일 때
 							if(result.isLast) {
 								console.log('작업을 완료하였습니다.');
+							
+							//저장했을 때
+							}else if(result.isSaved) {
+								console.log(saveDir + '에 복사하였습니다.');
+							}else{
+								console.error(saveDir + '에 복사 실패하였습니다.');
 							}
 						});
 					}else{
