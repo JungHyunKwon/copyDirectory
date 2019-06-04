@@ -42,7 +42,7 @@ function copyDirectory(options, callback) {
 			if(Array.isArray(names)) {
 				//함수일 때
 				if(typeof callback === 'function') {
-					let namesLength = names.length;
+					let nameLength = names.length;
 
 					(function loopNames(index) {
 						let callbackOptions = {
@@ -52,7 +52,7 @@ function copyDirectory(options, callback) {
 						};
 
 						//이름 개수만큼 반복
-						if(namesLength > index) {
+						if(nameLength > index) {
 							callbackOptions.saveDirectory = saveDirectory + '/' + filenamify(names[index], {
 								replacement : ''
 							});
