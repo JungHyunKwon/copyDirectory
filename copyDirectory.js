@@ -9,6 +9,7 @@
 const fs = require('fs-extra'), // {@link https://github.com/jprichardson/node-fs-extra}
 	  filenamify = require('filenamify'), // {@link https://github.com/sindresorhus/filenamify}
 	  readline = require('readline'),
+	  isArray = Array.isArray,
 	  rl = readline.createInterface({
 	      input : process.stdin,
 		  output : process.stdout
@@ -39,7 +40,7 @@ function copyDirectory(options, callback) {
 			let names = options.names;
 
 			//배열일 때
-			if(Array.isArray(names)) {
+			if(isArray(names)) {
 				//함수일 때
 				if(typeof callback === 'function') {
 					let namesLength = names.length;
@@ -125,11 +126,13 @@ rl.question('경로 : ', (directory) => {
 				});
 			}else{
 				console.error('저장 경로를 입력해주세요');
+
 				rl.close();	
 			}
 		});
 	}else{
 		console.error('경로를 입력해주세요');
+
 		rl.close();
 	}
 });
