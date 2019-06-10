@@ -6,7 +6,7 @@
 
 'use strict';
 
-const fs = require('fs-extra'), // {@link https://github.com/jprichardson/node-fs-extra}
+const fse = require('fs-extra'), // {@link https://github.com/jprichardson/node-fs-extra}
 	  filenamify = require('filenamify'), // {@link https://github.com/sindresorhus/filenamify}
 	  readline = require('readline'),
 	  rl = readline.createInterface({
@@ -44,7 +44,7 @@ function copyDirectory(options, callback) {
 						replacement : ''
 					});
 
-					fs.copy(directory, saveDir, err => {
+					fse.copy(directory, saveDir, err => {
 						result.push({
 							directory : directory,
 							saveDirectory : saveDir,
