@@ -14,63 +14,6 @@ const fse = require('fs-extra'), // {@link https://github.com/jprichardson/node-
 		  output : process.stdout
 	  });
 
-/**
- * @param {obejct} options {
-       directory : string,
-	   saveDirectory : string,
-	   names : array
-   }
-   @param {function} callback {array}
- * @since 2018-09-05
- */
-function copyDirectory(options, callback) {
-	let callbackIsFunction = typeof callback === 'function',
-		result = [];
-
-	//객체일 때
-	if(options) {
-		let names = options.names;
-		
-		//배열일 때
-		if(Array.isArray(names)) {
-			let directory = options.directory,
-				saveDirectory = options.saveDirectory,
-				namesLength = names.length;
-
-			(function loopNames(index) {
-				//이름 개수만큼 반복
-				if(namesLength > index) {
-					let saveDir = saveDirectory + '/' + filenamify(names[index], {
-						replacement : ''
-					});
-
-					fse.copy(directory, saveDir, err => {
-						result.push({
-							directory : directory,
-							saveDirectory : saveDir,
-							isSaved : (err) ? false : true //오류가 있을 때
-						});
-
-						loopNames(index + 1);
-					});
-
-				//함수일 때
-				}else if(callbackIsFunction) {
-					callback(result);
-				}
-			})(0);
-
-		//함수일 때
-		}else if(callbackIsFunction) {
-			callback(result);
-		}
-	
-	//함수일 때
-	}else if(callbackIsFunction) {
-		callback(result);
-	}
-}
-
 //질문
 rl.question('경로 : ', directory => {
 	//값이 있을 때
@@ -83,24 +26,29 @@ rl.question('경로 : ', directory => {
 				rl.question('이름 : ', names => {
 					//값이 있을 때
 					if(names) {
-						copyDirectory({
-							directory : directory,
-							saveDirectory : saveDirectory,
-							names : names.split(',')
-						}, result => {
-							result.forEach((value, index, array) => {
-								let saveDir = value.saveDirectory;
+						names = names.split(',');
 
-								//저장했을 때
-								if(value.isSaved) {
-									console.log(saveDir + '에 복사하였습니다.');
-								}else{
-									console.error(saveDir + '에 복사하지 못했습니다.');
-								}
-							});
-							
-							console.log('작업을 완료하였습니다.');
-						});
+						let namesLength = names.length;
+
+						(function loopNames(index) {
+							//이름 개수만큼 반복
+							if(namesLength > index) {
+								let saveDir = saveDirectory + '/' + filenamify(names[index], {
+									replacement : ''
+								});
+
+								fse.copy(directory, saveDir, err => {
+									//오류가 있을 때
+									if(err) {
+										console.error(saveDir + '에 복사하지 못했습니다.');
+									}else{
+										console.log(saveDir + '에 복사하였습니다.');
+									}
+
+									loopNames(index + 1);
+								});
+							}
+						})(0);
 					}else{
 						console.error('이름을 입력해주세요');
 					}
