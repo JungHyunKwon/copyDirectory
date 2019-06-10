@@ -40,14 +40,14 @@ function copyDirectory(options, callback) {
 			(function loopNames(index) {
 				//이름 개수만큼 반복
 				if(namesLength > index) {
-					let nameDirectory = saveDirectory + '/' + filenamify(names[index], {
+					let saveDir = saveDirectory + '/' + filenamify(names[index], {
 						replacement : ''
 					});
 
-					fs.copy(directory, nameDirectory, err => {
+					fs.copy(directory, saveDir, err => {
 						result.push({
 							directory : directory,
-							saveDirectory : nameDirectory,
+							saveDirectory : saveDir,
 							isSaved : (err) ? false : true //오류가 있을 때
 						});
 
@@ -89,13 +89,13 @@ rl.question('경로 : ', directory => {
 							names : names.split(',')
 						}, result => {
 							result.forEach((value, index, array) => {
-								let nameDirectory = value.saveDirectory;
+								let saveDir = value.saveDirectory;
 
 								//저장했을 때
 								if(value.isSaved) {
-									console.log(nameDirectory + '에 복사하였습니다.');
+									console.log(saveDir + '에 복사하였습니다.');
 								}else{
-									console.error(nameDirectory + '에 복사하지 못했습니다.');
+									console.error(saveDir + '에 복사하지 못했습니다.');
 								}
 							});
 							
