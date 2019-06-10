@@ -88,7 +88,7 @@ rl.question('경로 : ', directory => {
 							saveDirectory : saveDirectory,
 							names : names.split(',')
 						}, result => {
-							result.forEach((value, index, arraay) => {
+							result.forEach((value, index, array) => {
 								let nameDirectory = value.saveDirectory;
 
 								//저장했을 때
