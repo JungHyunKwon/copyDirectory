@@ -47,13 +47,15 @@ rl.question('경로 : ', directory => {
 
 									loopNames(index + 1);
 								});
+							}else{
+								rl.close();
 							}
 						})(0);
 					}else{
 						console.error('이름을 입력해주세요');
-					}
 
-					rl.close();
+						rl.close();
+					}
 				});
 			}else{
 				console.error('저장 경로를 입력해주세요');
