@@ -7,7 +7,6 @@
 'use strict';
 
 const fse = require('fs-extra'), // {@link https://github.com/jprichardson/node-fs-extra}
-	  filenamify = require('filenamify'), // {@link https://github.com/sindresorhus/filenamify}
 	  readline = require('readline'),
 	  rl = readline.createInterface({
 	      input : process.stdin,
@@ -18,9 +17,9 @@ const fse = require('fs-extra'), // {@link https://github.com/jprichardson/node-
 rl.question('경로 : ', directory => {
 	//값이 있을 때
 	if(directory) {
-		rl.question('저장 경로 : ', saveDirectory => {
+		rl.question('저장 경로 : ', baseDirectory => {
 			//값이 있을 때
-			if(saveDirectory) {
+			if(baseDirectory) {
 				console.log('\n쉼표로 구분할 수 있습니다.\n');
 
 				rl.question('이름 : ', names => {
@@ -33,16 +32,14 @@ rl.question('경로 : ', directory => {
 						(function loopNames(index) {
 							//이름 개수만큼 반복
 							if(namesLength > index) {
-								let saveDir = saveDirectory + '/' + filenamify(names[index], {
-									replacement : ''
-								});
+								let saveDirectory = baseDirectory + '/' + names[index];
 
-								fse.copy(directory, saveDir, err => {
+								fse.copy(directory, saveDirectory, err => {
 									//오류가 있을 때
 									if(err) {
-										console.error(saveDir + '에 복사하지 못했습니다.');
+										console.error(saveDirectory + '에 복사하지 못했습니다.');
 									}else{
-										console.log(saveDir + '에 복사하였습니다.');
+										console.log(saveDirectory + '에 복사하였습니다.');
 									}
 
 									loopNames(index + 1);

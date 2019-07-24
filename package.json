@@ -9,7 +9,6 @@
   "author": "JungHyunKwon",
   "license": "ISC",
   "dependencies": {
-    "filenamify": "^2.1.0",
     "fs-extra": "^7.0.0"
   }
 }
